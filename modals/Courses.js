@@ -8,4 +8,4 @@ const CoursesSchema = new mongoose.Schema({
 
 const Courses = mongoose.model('courses', CoursesSchema);
 
-export default Courses; // Export as default
+export default Courses;
