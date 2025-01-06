@@ -115,3 +115,5 @@ export const deleteModales = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+
