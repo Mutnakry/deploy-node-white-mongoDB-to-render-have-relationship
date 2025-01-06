@@ -8,25 +8,59 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Create a new course with image upload
+// const createCourses = async (req, res) => {
+//     const { cat_name, detail } = req.body;
+//     const image_url = req.file ? `/uploads/${req.file.filename}` : null;
+
+//     const newCourses = new Courses({
+//         cat_name,
+//         image_url,
+//         detail,
+//     });
+
+//     try {
+//         const savedCourses = await newCourses.save();
+//         res.status(201).json(savedCourses);
+//     } catch (err) {
+//         res.status(400).json({ message: err.message });
+//     }
+// };
+
+// Get all courses
+
 const createCourses = async (req, res) => {
-    const { cat_name, detail } = req.body;
+    // Destructure required fields from the request body
+    const { cat_name, description, lesson, chapter, status, document, exam, course_type } = req.body;
+
+    // Handle file upload (image URL)
     const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
+    // Create a new course document based on the schema
     const newCourses = new Courses({
         cat_name,
         image_url,
-        detail,
+        description,
+        lesson,
+        chapter,
+        status,
+        document,
+        exam,
+        course_type
     });
 
     try {
+        // Save the new course to the database
         const savedCourses = await newCourses.save();
+        
+        // Send the saved course back as a response
         res.status(201).json(savedCourses);
     } catch (err) {
+        // Catch any errors and return a 400 status with the error message
         res.status(400).json({ message: err.message });
     }
 };
 
-// Get all courses
+
 const getCourses = async (req, res) => {
     try {
         const courses = await Courses.find();  // Using Courses model
