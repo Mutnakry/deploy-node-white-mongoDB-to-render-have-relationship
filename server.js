@@ -30,6 +30,8 @@ app.use('/api/users', usersRoutes);
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(process.env.JWT_SECRET_KEY); // Should print the secret key if it's loaded correctly
+
 });
 
 

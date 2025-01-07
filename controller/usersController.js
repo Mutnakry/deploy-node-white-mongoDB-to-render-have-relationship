@@ -1,5 +1,15 @@
 import Users from '../modals/Users.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken'; // Import jsonwebtoken
+
+// Define generateAuthToken function
+const generateAuthToken = (user) => {
+  const token = jwt.sign(
+    { _id: user._id, email: user.email },
+    process.env.JWT_SECRET_KEY, // Secret key from .env
+    { expiresIn: '1h' }
+  );
+};
 
 // Controller to create a new user
 export const createUser = async (req, res) => {
@@ -23,7 +33,6 @@ export const createUser = async (req, res) => {
 
 
 
-
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -43,9 +52,12 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    // Generate auth token
+    const token = generateAuthToken(user);
+
     res.status(200).json({
       message: 'Login successful',
-      token: generateAuthToken(user), 
+      token,  // Send the generated token
       user: {
         _id: user._id,
         firstName: user.firstName,
@@ -65,10 +77,10 @@ export const loginUser = async (req, res) => {
 
 const GetUser = async (req, res) => {
   try {
-      const courses = await Users.find();  // Using Courses model
-      res.status(200).json(courses);
+    const courses = await Users.find();  // Using Courses model
+    res.status(200).json(courses);
   } catch (err) {
-      res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
