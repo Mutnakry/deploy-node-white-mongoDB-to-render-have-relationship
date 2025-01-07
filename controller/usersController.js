@@ -48,3 +48,17 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
+
+
+
+const GetUser = async (req, res) => {
+  try {
+      const courses = await Users.find();  // Using Courses model
+      res.status(200).json(courses);
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+};
+
+
+export { GetUser };
