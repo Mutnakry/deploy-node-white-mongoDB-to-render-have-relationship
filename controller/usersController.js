@@ -1,5 +1,5 @@
 import Users from '../modals/Users.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // Controller to create a new user
 export const createUser = async (req, res) => {
