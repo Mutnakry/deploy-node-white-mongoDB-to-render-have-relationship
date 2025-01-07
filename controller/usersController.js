@@ -54,19 +54,20 @@ export const loginUser = async (req, res) => {
 
     // Generate auth token
     const token = generateAuthToken(user);
+    // const token = jwt.sign({ user_id: user.user_id, user_email: user.user_email }, 'your-secret-key', { expiresIn: '1h' });
+
 
     res.status(200).json({
       message: 'Login successful',
-      token,  // Send the generated token
-      user: {
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        age: user.age,
-        gender: user.gender,
-        user_role: user.user_role
-      }
+      token: token,
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      age: user.age,
+      gender: user.gender,
+      user_role: user.user_role
+
     });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in', error: error.message });
