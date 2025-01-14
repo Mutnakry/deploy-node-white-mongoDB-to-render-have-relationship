@@ -22,17 +22,20 @@ app.use('/uploads', express.static('uploads'));
 import usersRoutes from './routes/usersRoutes.js'
 import categoryRoute from './routes/Courses.Router.js';
 import ModalesRoute from './routes/Modales.Router.js';
+import SubModalesRoute from './routes/SubModales.Router.js';
 
 app.use("/api/courses", categoryRoute);
 app.use("/api/modales", ModalesRoute);
 app.use('/api/users', usersRoutes);
+app.use('/api/submodale', SubModalesRoute);
 
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(process.env.JWT_SECRET_KEY); // Should print the secret key if it's loaded correctly
-
+  console.log(process.env.JWT_SECRET_KEY);
 });
 
 
 // project 2
+///email=nakrymut375@gmail.com
+///pass=123

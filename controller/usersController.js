@@ -1,8 +1,6 @@
 import Users from '../modals/Users.js';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken'; // Import jsonwebtoken
-
-// Define generateAuthToken function
+import jwt from 'jsonwebtoken'; 
 const generateAuthToken = (user) => {
   const token = jwt.sign(
     { _id: user._id, email: user.email },
@@ -11,19 +9,19 @@ const generateAuthToken = (user) => {
   );
 };
 
-// Controller to create a new user
 export const createUser = async (req, res) => {
   const { lastName, firstName, age, gender, email, password } = req.body;
 
   try {
-    // Hash the password before saving it
-    const saltRounds = 10; // You can adjust the salt rounds (higher is more secure but slower)
+     // Check email
+     const existingUser = await Users.findOne({ email });
+     if (existingUser) {
+       return res.status(400).json({ message: 'Email already exists' });
+     }
+ 
+    const saltRounds = 10; 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Create a new user with the hashed password
     const newUser = new Users({ lastName, firstName, age, gender, email, password: hashedPassword });
-
-    // Save the user to the database
     await newUser.save();
     res.status(201).json({ message: 'User created successfully', user: newUser });
   } catch (error) {
@@ -74,11 +72,9 @@ export const loginUser = async (req, res) => {
   }
 };
 
-
-
 const GetUser = async (req, res) => {
   try {
-    const courses = await Users.find();  // Using Courses model
+    const courses = await Users.find(); 
     res.status(200).json(courses);
   } catch (err) {
     res.status(500).json({ message: err.message });

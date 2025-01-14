@@ -1,6 +1,8 @@
 import Courses from "../modals/Courses.js";
 import Modales from "../modals/Modale.js";
 
+
+
 export const createModales = async (req, res) => {
     const { mod_name, courses_id, description, status } = req.body;
 
@@ -27,9 +29,31 @@ export const createModales = async (req, res) => {
 };
 
 
+
+
 export const getModales = async (req, res) => {
     try {
         const modales = await Modales.find().populate('courses_id');
+
+        res.status(200).json(modales);
+    } catch (err) {
+        console.error('Error fetching Modales:', err);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
+export const getModalesBYcoursesID = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // const modales = await Modales.find({ courses_id: id }).populate('courses_id');
+        const modales = await Modales.find({ courses_id: id }).populate('courses_id');
+        // console.log(modales); // Log the response to ensure it's correct
+
+
+        if (!modales || modales.length === 0) {
+            return res.status(404).json({ message: 'No Modales found for the given Course ID' });
+        }
 
         res.status(200).json(modales);
     } catch (err) {
@@ -65,12 +89,10 @@ export const getModales1 = async (req, res) => {
 
 
 
-
-
 export const getModalesById = async (req, res) => {
     const { id } = req.params;
     try {
-        const modales = await Modales.findById(id);
+        const modales = await Modales.findById(id).populate('courses_id');
         if (!modales) {
             return res.status(404).json({ message: 'Modales not found' });
         }
@@ -80,6 +102,7 @@ export const getModalesById = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 
 
 export const updateModales = async (req, res) => {
